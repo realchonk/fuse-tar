@@ -1,3 +1,4 @@
+#include <sys/xattr.h>
 #include <errno.h>
 #include "driver.h"
 
@@ -66,29 +67,23 @@ int tar_fallocate(const char* path, int i, off_t o1, off_t o2, struct fuse_file_
    return -EROFS;
 }
 int tar_setxattr(const char* path, const char* name, const char* value, size_t len_value, int flags) {
-   (void)path;
-   (void)name;
-   (void)value;
-   (void)len_value;
-   (void)flags;
-   return -ENOTSUP;
+   if (!strcmp(path, "/")) return setxattr(tar_path, name, value, len_value, flags);
+   else return -ENOTSUP;
 }
 int tar_getxattr(const char* path, const char* name, char* value, size_t len_value) {
-   (void)path;
-   (void)name;
-   (void)value;
-   (void)len_value;
-   return -ENOTSUP;
+   if (!strcmp(path, "/")) return getxattr(path, name, value, len_value);
+   else return -ENOTSUP;
 }
 int tar_listxattr(const char* path, char* list, size_t len_list) {
-   (void)path;
-   (void)list;
-   (void)len_list;
-   return -ENOTSUP;
+   if (!strcmp(path, "/")) return listxattr(path, list, len_list);
+   else return -ENOTSUP;
 }
 int tar_removexattr(const char* path, const char* name) {
-   (void)path;
-   (void)name;
-   return -ENOTSUP;
+   if (!strcmp(path, "/")) return removexattr(path, name);
+   else return -ENOTSUP;
 }
-
+int tar_release(const char* path, struct fuse_file_info* fi) {
+   (void)path;
+   (void)fi;
+   return 0;
+}

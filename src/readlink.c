@@ -2,6 +2,10 @@
 #include "driver.h"
 
 int tar_readlink(const char* path, char* linkbuf, size_t len_linkbuf) {
+   if (!strcmp(path, "/")) {
+      strncpy(linkbuf, "/", len_linkbuf);
+      return 0;
+   }
    struct tar_header* hdr;
    if (tar_find(path + 1, &hdr, NULL)) return -errno;
    if (hdr->tar_type == '2') {

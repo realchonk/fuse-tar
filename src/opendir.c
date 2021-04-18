@@ -5,6 +5,7 @@
 
 int tar_opendir(const char* path, struct fuse_file_info* fi) {
    (void)fi;
+   if (!strcmp(path, "/")) return 0;
    struct tar_header* hdr;
    if (tar_find(path + 1, &hdr, NULL)) return -errno;
    else if (hdr->tar_type != '5') return -ENOTDIR;

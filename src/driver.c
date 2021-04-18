@@ -33,6 +33,8 @@ struct fuse_operations tar_fuse_ops = {
    .getxattr = tar_getxattr,
    .listxattr = tar_listxattr,
    .removexattr = tar_removexattr,
+   .release = tar_release,
+   .releasedir = tar_release,
 
    .destroy = tar_destroy,
 };

@@ -50,6 +50,6 @@ int tar_setxattr(const char* path, const char* name, const char* value, size_t l
 int tar_getxattr(const char* path, const char* name, char* value, size_t len_value);
 int tar_listxattr(const char* path, char* list, size_t len_list);
 int tar_removexattr(const char* path, const char* name);
-
+int tar_release(const char* path, struct fuse_file_info* fi);
 
 #endif /* FILE_DRIVER_H */
