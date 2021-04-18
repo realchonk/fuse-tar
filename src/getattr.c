@@ -25,7 +25,7 @@ int tar_getattr(const char* path, struct stat* st) {
       st->st_nlink = 1;
       st->st_uid = parse_octala(hdr->tar_uid);
       st->st_gid = parse_octala(hdr->tar_gid);
-      st->st_mtime = parse_octala(hdr->tar_mtime);
+      st->st_atime = st->st_ctime = st->st_mtime = parse_octala(hdr->tar_mtime);
       switch (hdr->tar_type) {
       case '\0':
       case '0':
@@ -35,6 +35,7 @@ int tar_getattr(const char* path, struct stat* st) {
          break;
       case '2':
          st->st_mode |= S_IFLNK;
+         st->st_size = strnlen(hdr->tar_linked_name, sizeof(hdr->tar_linked_name));
          break;
       case '3':
          st->st_mode |= S_IFCHR;

@@ -12,6 +12,7 @@ struct fuse_operations tar_fuse_ops = {
    .readdir = tar_readdir,
    .access = tar_access,
    .read = tar_read,
+   .readlink = tar_readlink,
 
    .mknod = tar_mknod,
    .mkdir = tar_mkdir,

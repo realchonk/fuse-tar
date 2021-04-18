@@ -23,6 +23,7 @@ struct tar_header {
    char tar_padding[12];
 };
 
+extern const char* tar_path;
 extern void* tar_archive;
 extern struct stat tar_st;
 

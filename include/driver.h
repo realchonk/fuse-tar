@@ -30,6 +30,7 @@ int tar_getattr(const char*, struct stat*);
 int tar_readdir(const char*, void*, fuse_fill_dir_t, off_t, struct fuse_file_info*);
 int tar_access(const char*, int);
 int tar_read(const char*, char*, size_t, off_t, struct fuse_file_info*);
+int tar_readlink(const char*, char*, size_t);
 
 // stubs
 int tar_mknod(const char* path, mode_t mode, dev_t dev);
