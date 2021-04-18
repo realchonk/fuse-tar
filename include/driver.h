@@ -31,6 +31,8 @@ int tar_readdir(const char*, void*, fuse_fill_dir_t, off_t, struct fuse_file_inf
 int tar_access(const char*, int);
 int tar_read(const char*, char*, size_t, off_t, struct fuse_file_info*);
 int tar_readlink(const char*, char*, size_t);
+int tar_open(const char*, struct fuse_file_info*);
+int tar_opendir(const char*, struct fuse_file_info*);
 
 // stubs
 int tar_mknod(const char* path, mode_t mode, dev_t dev);
@@ -44,7 +46,10 @@ int tar_chown(const char* path, uid_t uid, gid_t gid);
 int tar_truncate(const char* path, off_t off);
 int tar_write(const char* path, const char* data, size_t num, off_t off, struct fuse_file_info* fi);
 int tar_fallocate(const char* path, int i, off_t o1, off_t o2, struct fuse_file_info* fi);
-
+int tar_setxattr(const char* path, const char* name, const char* value, size_t len_value, int flags);
+int tar_getxattr(const char* path, const char* name, char* value, size_t len_value);
+int tar_listxattr(const char* path, char* list, size_t len_list);
+int tar_removexattr(const char* path, const char* name);
 
 
 #endif /* FILE_DRIVER_H */

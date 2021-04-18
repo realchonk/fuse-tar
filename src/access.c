@@ -3,6 +3,8 @@
 #include <errno.h>
 #include "driver.h"
 
+// TODO: implememt permission checking
+
 int tar_access(const char* path, int mode) {
    if (!strcmp(path, "/")) return access(tar_path, mode);
    struct tar_header* hdr;

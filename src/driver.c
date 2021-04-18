@@ -13,6 +13,8 @@ struct fuse_operations tar_fuse_ops = {
    .access = tar_access,
    .read = tar_read,
    .readlink = tar_readlink,
+   .open = tar_open,
+   .opendir = tar_opendir,
 
    .mknod = tar_mknod,
    .mkdir = tar_mkdir,
@@ -27,6 +29,10 @@ struct fuse_operations tar_fuse_ops = {
    .write = tar_write,
    .create = tar_create,
    .fallocate = tar_fallocate,
+   .setxattr = tar_setxattr,
+   .getxattr = tar_getxattr,
+   .listxattr = tar_listxattr,
+   .removexattr = tar_removexattr,
 
    .destroy = tar_destroy,
 };

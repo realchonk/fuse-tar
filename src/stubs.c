@@ -65,5 +65,30 @@ int tar_fallocate(const char* path, int i, off_t o1, off_t o2, struct fuse_file_
    (void)fi;
    return -EROFS;
 }
-
+int tar_setxattr(const char* path, const char* name, const char* value, size_t len_value, int flags) {
+   (void)path;
+   (void)name;
+   (void)value;
+   (void)len_value;
+   (void)flags;
+   return -ENOTSUP;
+}
+int tar_getxattr(const char* path, const char* name, char* value, size_t len_value) {
+   (void)path;
+   (void)name;
+   (void)value;
+   (void)len_value;
+   return -ENOTSUP;
+}
+int tar_listxattr(const char* path, char* list, size_t len_list) {
+   (void)path;
+   (void)list;
+   (void)len_list;
+   return -ENOTSUP;
+}
+int tar_removexattr(const char* path, const char* name) {
+   (void)path;
+   (void)name;
+   return -ENOTSUP;
+}
 
