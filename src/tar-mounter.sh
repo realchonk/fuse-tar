@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ $(whereis zenity) = "zenity:" ] && echo "$(basename $0): please install zenity" >&2 && exit 4
+[ "$(whereis zenity)" = "zenity:" ] && echo "$(basename $0): please install zenity" >&2 && exit 4
 [ $# -ne 1 ] && echo "Usage: $(basename $0) <archive>" >&2 && exit 1
 
 dir=$(zenity --file-selection --directory)
