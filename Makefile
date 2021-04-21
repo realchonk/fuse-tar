@@ -20,6 +20,6 @@ clean:
 
 test: fuse_tar
 	mkdir -p mp
-	./fuse_tar -d -s -f archive.tar mp
+	./fuse_tar -d -s -f archive.tar.gz mp
 
 .PHONY: all clean test

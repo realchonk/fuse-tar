@@ -2,11 +2,6 @@
 #include "driver.h"
 #include "tar.h"
 
-static void tar_destroy(void* priv) {
-   (void)priv;
-   free(tar_archive);
-}
-
 struct fuse_operations tar_fuse_ops = {
    .getattr = tar_getattr,
    .readdir = tar_readdir,

@@ -1,3 +1,6 @@
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
 #include <unistd.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -58,9 +61,38 @@ bool starts_with(const char* s, const char* b) {
    const size_t len_b = strlen(b);
    return len_s >= len_b ? !memcmp(s, b, len_b) : false;
 }
+bool ends_with(const char* s, const char* e) {
+   const size_t len_s = strlen(s);
+   const size_t len_e = strlen(e);
+   return len_s >= len_e ? !memcmp(s + (len_s - len_e), e, len_e) : false;
+}
 
 char* strrrchr(const char* s, char ch) {
    while (*s != ch) --s;
    return (char*)s;
+}
+
+
+static size_t resizeto_pagesize(size_t num) {
+   const long page_size = sysconf(_SC_PAGE_SIZE);
+   return (num - (num % page_size)) + page_size;
+}
+int mmap_fd(int fd, struct mmap_file_result* result) {
+   int tmp;
+   struct stat st;
+   if (fstat(fd, &st) != 0) return tmp = errno, close(fd), errno = tmp, -1;
+   const size_t size = resizeto_pagesize(st.st_size);
+   void* ptr = mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0);   
+   if (!ptr) return tmp = errno, close(fd), errno = tmp, -1;
+   result->data = ptr;
+   result->st = st;
+   result->fd = fd;
+   result->real_size = size;
+   return 0;
+}
+int mmap_file(const char* path, struct mmap_file_result* result) {
+   int fd = open(path, O_RDONLY);
+   if (fd < 0) return -1;
+   return mmap_fd(fd, result);
 }
 

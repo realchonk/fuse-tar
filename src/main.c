@@ -1,4 +1,7 @@
+#include <sys/mman.h>
 #include <string.h>
+#include <unistd.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
 #include "driver.h"
@@ -7,6 +10,9 @@
 const char* tar_path = NULL;
 void* tar_archive = NULL;
 struct stat tar_st;
+static struct mmap_file_result mmap_file_result;
+static char tempfile[L_tmpnam + 1];
+static bool has_tempfile;
 
 int main(int argc, char* argv[]) {
    int i;
@@ -18,6 +24,31 @@ int main(int argc, char* argv[]) {
    }
 
    tar_path = argv[i];
+   if (ends_with(tar_path, ".tar")) {
+      if (mmap_file(tar_path, &mmap_file_result) != 0) {
+         fprintf(stderr, "fuse_tar: failed to read '%s': %s\n", tar_path, strerror(errno));
+         return 1;
+      }
+      has_tempfile = false;
+   } else {
+      // TODO: Replace tmpnam with mkstemp
+      if (tmpnam(tempfile) == NULL) {
+         fprintf(stderr, "fuse_tar: failed to create temporary file: %s\n", strerror(errno));
+         return 1;
+      }
+      if (decompress_file(tar_path, tempfile) != 0) {
+         fprintf(stderr, "fuse_tar: failed to decompress file '%s': %s\n", tar_path, strerror(errno));
+         return 1;
+      }
+      if (mmap_file(tempfile, &mmap_file_result) != 0) {
+         fprintf(stderr, "fuse_tar: failed to read '%s': %s\n", tempfile, strerror(errno));
+         return 1;
+      }
+      has_tempfile = true;
+      tar_path = tempfile;
+   }
+   tar_archive = mmap_file_result.data;
+   printf("sizeof(tar_archive)=%zu\n", mmap_file_result.st.st_size);
    const ssize_t sz = read_file(tar_path, &tar_archive, &tar_st);
    if (sz < 0) {
       error("failed to read '%s'", tar_path);
@@ -30,4 +61,10 @@ int main(int argc, char* argv[]) {
    return fuse_main(argc, argv, &tar_fuse_ops, NULL);
 }
 
+void tar_destroy(void* priv) {
+   (void)priv;
+   munmap(mmap_file_result.data, mmap_file_result.real_size);
+   close(mmap_file_result.fd);
+   remove(tempfile);
+}
 

@@ -33,6 +33,7 @@ int tar_read(const char*, char*, size_t, off_t, struct fuse_file_info*);
 int tar_readlink(const char*, char*, size_t);
 int tar_open(const char*, struct fuse_file_info*);
 int tar_opendir(const char*, struct fuse_file_info*);
+void tar_destroy(void*);
 
 // stubs
 int tar_mknod(const char* path, mode_t mode, dev_t dev);
