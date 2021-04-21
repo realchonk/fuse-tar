@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Tar-Archive Mounter (FUSE)
+Exec=tar-mounter %u
+Terminal=false
+MimeType=application/x-tar;application/x-compressed-tar;application/x-xz-compressed-tar;application/x-bzip-compressed-tar;application/x-lzma-compressed-tar;application/x-lz4-compressed-tar;application/x-zst-compressed-tar;

@@ -48,7 +48,6 @@ int main(int argc, char* argv[]) {
       tar_path = tempfile;
    }
    tar_archive = mmap_file_result.data;
-   printf("sizeof(tar_archive)=%zu\n", mmap_file_result.st.st_size);
    const ssize_t sz = read_file(tar_path, &tar_archive, &tar_st);
    if (sz < 0) {
       error("failed to read '%s'", tar_path);

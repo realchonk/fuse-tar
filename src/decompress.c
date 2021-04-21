@@ -11,7 +11,6 @@ static int invoke_decomp(const char* decomp, const char* infile, const char* out
       errno = ENOMEM;
       return -1;
    }
-   puts(str);
    const int ec = system(str);
    free(str);
    return ec;
